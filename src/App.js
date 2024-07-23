@@ -9,11 +9,20 @@ import ShoppingCart from "./components/ShoppingCart";
 import { AppProvider } from "./context/AppContext";
 import "./App.css";
 
+/**
+ * Main application component that sets up routing and provides context.
+ *
+ * @returns {JSX.Element} The App component.
+ */
 function App() {
   return (
+    // Provide context to the entire application
     <AppProvider>
+      {/* Set up routing for the application */}
       <Router>
+        {/* Render the navigation bar */}
         <Navbar />
+        {/* Define routes for different pages */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

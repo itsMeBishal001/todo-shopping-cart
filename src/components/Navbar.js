@@ -3,10 +3,21 @@ import { Link } from "react-router-dom";
 import AppContext from "../context/AppContext";
 import "./Navbar.css";
 
+/**
+ * Navbar component to display navigation links and the shopping cart item count.
+ *
+ * @returns {JSX.Element} The rendered Navbar component.
+ */
 function Navbar() {
+  // State to control the visibility of the mobile menu
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { cart } = useContext(AppContext); // Use context to get the cart
 
+  // Context to get the current cart items
+  const { cart } = useContext(AppContext);
+
+  /**
+   * Toggles the mobile menu open/closed state.
+   */
   const handleToggleClick = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -14,11 +25,14 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-container">
+        {/* Logo section with a link to the home page */}
         <div className="navbar-logo">
           <Link to="/" className="navbar-link">
             Todo & Cart
           </Link>
         </div>
+
+        {/* Navigation menu */}
         <ul className={`navbar-menu ${isMobileMenuOpen ? "active" : ""}`}>
           <li className="navbar-item">
             <Link to="/" className="navbar-link">
@@ -43,12 +57,15 @@ function Navbar() {
           <li className="navbar-item">
             <Link to="/shopping-cart" className="navbar-link">
               Shopping Cart
+              {/* Display cart item count if there are items in the cart */}
               {cart.length > 0 && (
                 <span className="cart-count">{cart.length}</span>
               )}
             </Link>
           </li>
         </ul>
+
+        {/* Toggle button for mobile menu */}
         <div
           className={`navbar-toggle ${isMobileMenuOpen ? "active" : ""}`}
           id="mobile-menu"
