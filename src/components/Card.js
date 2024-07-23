@@ -1,5 +1,5 @@
-import React from 'react';
-import './Card.css';
+import React from "react";
+import "./Card.css";
 
 function Card({ product, addToCart }) {
   return (
@@ -9,7 +9,9 @@ function Card({ product, addToCart }) {
         <h2 className="card-title">{product.title}</h2>
         <p className="card-price">${product.price}</p>
         <p className="card-description">{product.description}</p>
-        <button className="card-button" onClick={() => addToCart(product)}>Add to Cart</button>
+        <button className="card-button" onClick={() => addToCart(product)}>
+          Add to Cart
+        </button>
       </div>
     </div>
   );

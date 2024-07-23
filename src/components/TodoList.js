@@ -1,74 +1,66 @@
-import React, { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import './TodoList.css';
+import React from "react";
+import { useMediaQuery } from "react-responsive";
+import { useAppContext } from "../context/AppContext";
+import "./TodoList.css";
 
 function TodoList() {
-  const [tasks, setTasks] = useState([]);
-  const [taskInput, setTaskInput] = useState('');
+  const {
+    tasks,
+    taskInput,
+    setTaskInput,
+    addTask,
+    toggleTaskCompletion,
+    markTaskAsDone,
+    markTaskAsNotDone,
+    removeTask,
+    markAllAsDone,
+  } = useAppContext();
 
-  const addTask = () => {
-    if (taskInput.trim()) {
-      setTasks([...tasks, { text: taskInput, completed: false }]);
-      setTaskInput('');
-    }
-  };
-
-  const toggleTaskCompletion = index => {
-    const updatedTasks = tasks.map((task, i) =>
-      i === index ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
-  };
-
-  const markTaskAsDone = index => {
-    const updatedTasks = tasks.map((task, i) =>
-      i === index ? { ...task, completed: true } : task
-    );
-    setTasks(updatedTasks);
-  };
-
-  const markTaskAsNotDone = index => {
-    const updatedTasks = tasks.map((task, i) =>
-      i === index ? { ...task, completed: false } : task
-    );
-    setTasks(updatedTasks);
-  };
-
-  const removeTask = index => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
-  };
-
-  const markAllAsDone = () => {
-    const updatedTasks = tasks.map(task => ({ ...task, completed: true }));
-    setTasks(updatedTasks);
-  };
-
-  const completedCount = tasks.filter(task => task.completed).length;
-
+  const completedCount = tasks.filter((task) => task.completed).length;
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   return (
-    <div className={`todo-list ${isMobile ? 'mobile' : 'desktop'}`}>
+    <div className={`todo-list ${isMobile ? "mobile" : "desktop"}`}>
       <h2>To-Do List</h2>
       <div className="input-container">
         <input
           type="text"
           value={taskInput}
-          onChange={e => setTaskInput(e.target.value)}
+          onChange={(e) => setTaskInput(e.target.value)}
           placeholder="Add a new task"
           className="task-input"
         />
       </div>
       <div className="buttons">
-        <button onClick={addTask} className="add-task-btn">Add Task</button>
-        <button onClick={markAllAsDone} className="mark-all-done-btn">Mark All as Done</button>
+        <button onClick={addTask} className="add-task-btn">
+          Add Task
+        </button>
+        <button onClick={markAllAsDone} className="mark-all-done-btn">
+          Mark All as Done
+        </button>
       </div>
-      <p>Total tasks: {tasks.length}</p>
-      <p>Completed tasks: {completedCount}</p>
+      <div className="task-summary">
+        <div className="task-summary-card">
+          <span className="task-summary-icon">📋</span>
+          <p>Total tasks</p>
+          <p className="task-summary-count">{tasks.length}</p>
+        </div>
+        <div
+          className={`task-summary-card ${
+            completedCount === tasks.length ? "all-done" : ""
+          }`}
+        >
+          <span className="task-summary-icon">✅</span>
+          <p>Completed tasks</p>
+          <p className="task-summary-count">{completedCount}</p>
+        </div>
+      </div>
       <ul className="task-list">
         {tasks.map((task, index) => (
-          <li key={index} className={`task-item ${task.completed ? 'completed' : ''}`}>
+          <li
+            key={index}
+            className={`task-item ${task.completed ? "completed" : ""}`}
+          >
             <span
               className="task-text"
               onClick={() => toggleTaskCompletion(index)}
@@ -76,11 +68,26 @@ function TodoList() {
               {task.text}
             </span>
             {task.completed ? (
-              <button onClick={() => markTaskAsNotDone(index)} className="not-done-task-btn">Not Done</button>
+              <button
+                onClick={() => markTaskAsNotDone(index)}
+                className="not-done-task-btn"
+              >
+                Mark as Not Done
+              </button>
             ) : (
-              <button onClick={() => markTaskAsDone(index)} className="done-task-btn">Done</button>
+              <button
+                onClick={() => markTaskAsDone(index)}
+                className="done-task-btn"
+              >
+                Done
+              </button>
             )}
-            <button onClick={() => removeTask(index)} className="remove-task-btn">Remove</button>
+            <button
+              onClick={() => removeTask(index)}
+              className="remove-task-btn"
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>
